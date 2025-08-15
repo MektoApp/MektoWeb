@@ -1,14 +1,10 @@
 import axios from 'axios';
 
-export const API_BASE_URL = 'http://pecaapeca.app.br:8085/api';
-
 const api = axios.create({
-  baseURL: `${API_BASE_URL}`, // URL base da API
+  baseURL: 'http://pecaapeca.app.br:8085', // URL base da API
   headers: {
     'Content-Type': 'application/json',
   },
 });
-
-
 
 export default api;

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
+import { colors } from '../../theme/colors'
 
 import {
   CRow,
@@ -39,21 +40,22 @@ const WidgetsProducts = (props) => {
   }, [widgetChartRef1, widgetChartRef2])
 
   return (
-    <CRow className={props.className} xs={{ gutter: 4 }}>
-      <CCol sm={6} xl={4} xxl={3}>
-        <CWidgetStatsC
-          className="mb-3"
-          color="primary"
-          icon={<CIcon icon={cilBasket} height={36} />}
-          value="356"
-           progress={{ color: 'white', value: 75 }}
-          title="Todos os Produtos"
-        />
+        <CRow className={props.className} xs={{ gutter: 4 }}>
+          <CCol sm={6} xl={4} xxl={3}>
+          <CWidgetStatsC
+      className="mb-3"
+      style={{ backgroundColor: colors.halloween, color: 'white' }}
+      icon={<CIcon icon={cilBasket} height={36} />}
+      value="356"
+      progress={{ color: 'white', value: 75 }}
+      title="Todos os Produtos"
+    />
+
       </CCol>
        <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsC
           className="mb-3"
-          color="danger"
+          style={{ backgroundColor: colors.pretoAssombroso, color: 'white' }}
           icon={<CIcon icon={cilBasket} height={36} />}
           value="356"
            progress={{ color: 'white', value: 75 }}
@@ -63,7 +65,7 @@ const WidgetsProducts = (props) => {
        <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsC
           className="mb-3"
-          color="info"
+          style={{ backgroundColor: colors.cinzaDavys, color: 'white' }}
           icon={<CIcon icon={cilBasket} height={36} />}
           value="356"
            progress={{ color: 'white', value: 75 }}
@@ -73,7 +75,7 @@ const WidgetsProducts = (props) => {
        <CCol sm={6} xl={4} xxl={3}>
         <CWidgetStatsC
           className="mb-3"
-          color="secondary"
+           style={{ backgroundColor: colors.abobora, color: 'white' }}
           icon={<CIcon icon={cilBasket} height={36} />}
           value="356"
            progress={{ color: 'white', value: 75 }}

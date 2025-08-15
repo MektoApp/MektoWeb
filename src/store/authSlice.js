@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { login as loginApi, logout as logoutApi } from '../api/authService';
+import { login as loginApi, logout as logoutApi } from '../services/authService';
 
 const storedUser = JSON.parse(localStorage.getItem('user')) || null;
 

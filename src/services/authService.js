@@ -1,13 +1,19 @@
-import api from './axiosInstance';
+import api from '../api/axiosInstanceAuth';
 
 export const login = async (username, password) => {
   const response = await api.post('/auth/authenticate', { username, password });
   const user = response.data;
 
-  // Armazena o usuário no localStorage
-  localStorage.setItem('user', JSON.stringify(user));
+  // Armazenar username + password para Basic Auth
+  const authUser = {
+    ...user,
+    username,
+    password // precisa armazenar a senha para poder enviar no Basic Auth depois
+  };
 
-  return user;
+  localStorage.setItem('user', JSON.stringify(authUser));
+
+  return authUser;
 };
 
 export const logout = () => {
