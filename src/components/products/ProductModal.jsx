@@ -13,7 +13,11 @@ import {
   CFormLabel,
 } from '@coreui/react'
 import { productProvider } from '../../providers/ProductProvider'
+import { categoryProvider } from '../../providers/CategoryProvider'
+import CustomSelect from '../layout/CustomSelect'
+
 import { API_BASE_URL } from '../../api/axiosInstance'
+import Select from 'react-select'
 
 const ProductModal = ({ visible, onClose, product, onSave }) => {
   const [formData, setFormData] = useState({
@@ -31,42 +35,62 @@ const ProductModal = ({ visible, onClose, product, onSave }) => {
     images: [], // imagens já salvas
     newImages: [], // novas imagens a serem carregadas
   })
+  const [categories, setCategories] = useState([])
+  const [selectedCategory, setSelectedCategory] = useState(null)
+
+ // Dentro do ProductModal.jsx
+
+// Quando fizer o useEffect para preencher o formData
+useEffect(() => {
+  if (product) {
+    const initialCategory = product.category
+      ? { value: product.category.id, label: product.category.name }
+      : null
+
+    setFormData({
+      ...formData,
+      name: product.name || '',
+      description: product.description || '',
+      quantity: product.quantity || 1,
+      price: product.price || '',
+      offerPrice: product.offerPrice || '',
+      categoryId: product.category?.id || '',
+      subCategoryId: product.subCategory?.id || '',
+      brandId: product.brand?.id || '',
+      variantId: product.variants?.[0]?.id || '',
+      variantType: product.variants?.[0]?.type || '',
+      companyName: product.companyName || '',
+      images: product.imagesPaths || [],
+      newImages: [],
+    })
+
+    setSelectedCategory(initialCategory) // <- aqui
+  } else {
+    setFormData({
+      name: '',
+      description: '',
+      quantity: 1,
+      price: '',
+      offerPrice: '',
+      categoryId: '',
+      subCategoryId: '',
+      brandId: '',
+      variantId: '',
+      variantType: '',
+      companyName: '',
+      images: [],
+      newImages: [],
+    })
+    setSelectedCategory(null)
+  }
+}, [product, categories])
+
 
   useEffect(() => {
-    if (product) {
-      setFormData({
-        name: product.name || '',
-        description: product.description || '',
-        quantity: product.quantity || 1,
-        price: product.price || '',
-        offerPrice: product.offerPrice || '',
-        categoryId: product.category?.id || '',
-        subCategoryId: product.subCategory?.id || '',
-        brandId: product.brand?.id || '',
-        variantId: product.variants?.[0]?.id || '',
-        variantType: product.variants?.[0]?.type || '', // preencher tipo
-        companyName: product.companyName || '',
-        images: product.imagesPaths || [],
-        newImages: [],
-      })
-    } else {
-      setFormData({
-        name: '',
-        description: '',
-        quantity: 1,
-        price: '',
-        offerPrice: '',
-        categoryId: '',
-        subCategoryId: '',
-        brandId: '',
-        variantId: '',
-        variantType: '',
-        companyName: '',
-        images: [],
-        newImages: [],
-      })
-    }
-  }, [product])
+    categoryProvider.getAll().then((res) => setCategories(res.content || []))
+  }, [])
+
+  const categoryOptions = (categories || []).map(cat => ({ value: cat.id, label: cat.name }))
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -102,6 +126,7 @@ const ProductModal = ({ visible, onClose, product, onSave }) => {
   }
 
   return (
+
     <CModal visible={visible} onClose={onClose} size="xl">
       <CModalHeader>
         <CModalTitle>{product ? 'Editar Produto' : 'Novo Produto'}</CModalTitle>
@@ -137,7 +162,15 @@ const ProductModal = ({ visible, onClose, product, onSave }) => {
           <div className="d-flex gap-3 mb-3">
             <div style={{ flex: 1 }}>
               <CFormLabel>Categoria</CFormLabel>
-              <CFormSelect name="categoryId" value={formData.categoryId} onChange={handleChange} options={[{ label: 'Selecione...', value: '' }]} />
+            <CustomSelect
+              options={categoryOptions}
+              value={formData.categoryId}
+              onChange={(val) => setFormData(prev => ({ ...prev, categoryId: val }))}
+              placeholder="Selecione a categoria..."
+
+            />
+
+
             </div>
             <div style={{ flex: 1 }}>
               <CFormLabel>Subcategoria</CFormLabel>

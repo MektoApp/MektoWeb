@@ -184,6 +184,7 @@ const ProductTable = () => {
         onClose={closeModal}
         product={editingProduct}
         onSave={() => loadProducts(page, search)}
+
       />
     </>
   )
