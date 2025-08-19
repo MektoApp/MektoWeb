@@ -8,6 +8,8 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
+import { colors } from '../../../theme/colors'
+
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -38,12 +40,12 @@ const Login = () => {
                 <CCardBody>
                   <CForm onSubmit={handleSubmit}>
                     <h1>Login</h1>
-                    <p className="text-body-secondary">Sign In to your account</p>
+                    <p className="text-body-secondary">Entrar na sua conta Mekto</p>
                     {error && <p className="text-danger">{error}</p>}
                     <CInputGroup className="mb-3">
                       <CInputGroupText><CIcon icon={cilUser} /></CInputGroupText>
                       <CFormInput
-                        placeholder="Username"
+                        placeholder="e-mail"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                       />
@@ -52,29 +54,29 @@ const Login = () => {
                       <CInputGroupText><CIcon icon={cilLockLocked} /></CInputGroupText>
                       <CFormInput
                         type="password"
-                        placeholder="Password"
+                        placeholder="Senha"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" type="submit" className="px-4">Login</CButton>
+                        <CButton style={{backgroundColor : colors.halloween}} type="submit" className="px-4">Login</CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">Forgot password?</CButton>
+                        <CButton color="link" className="px-0">Esqueceu sua senha?</CButton>
                       </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
+              <CCard className="text-white  py-5" style={{ width: '44%', backgroundColor: colors.halloween }}>
+                <CCardBody style={{backgroundColor : colors.halloween}} className="text-center">
                   <div>
-                    <h2>Sign up</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>Register Now!</CButton>
+                    <h2>Loja Online</h2>
+                    <p>Ainda não tem uma conta Mekto? Conheça agora mesmo nossa loja online!</p>
+                    <Link to="/store">
+                      <CButton color="secondary" className="mt-3"  tabIndex={-1}>Acessar Loja</CButton>
                     </Link>
                   </div>
                 </CCardBody>

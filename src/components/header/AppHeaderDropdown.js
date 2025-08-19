@@ -26,11 +26,23 @@ import {
 
 import avatar8 from './../../assets/images/avatars/2.jpg'
 import { logout as logoutAction } from '../../store/authSlice'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const user = useSelector((state) => state.auth.user)
+
+
+  if (!user) {
+    return (
+      <Link to="/login" className="nav-link">
+        Login
+      </Link>
+    )
+  }
   const handleLogout = () => {
     dispatch(logoutAction())
     navigate('/login') // redireciona para login
