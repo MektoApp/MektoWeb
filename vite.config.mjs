@@ -42,7 +42,7 @@ export default defineConfig(() => {
     server: {
       port: 3000,
       host: true,
-      allowedHosts: ['mekto.com.br'],
+      allowedHosts: ['mekto.com.br','altecnologia.com.br'],
       proxy: {
         // https://vitejs.dev/config/server-options.html
       },
