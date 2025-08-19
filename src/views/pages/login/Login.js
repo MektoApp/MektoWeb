@@ -45,7 +45,7 @@ const Login = () => {
                     <CInputGroup className="mb-3">
                       <CInputGroupText><CIcon icon={cilUser} /></CInputGroupText>
                       <CFormInput
-                        placeholder="e-mail"
+                        placeholder="E-mail"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                       />
