@@ -17,6 +17,7 @@ import {
   CButton,
 } from '@coreui/react'
 import { colors } from '../../theme/colors'
+import ImageGalleryModal from './ImageGalleryModal'
 
 
 const ProductPage = () => {
@@ -24,6 +25,8 @@ const ProductPage = () => {
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null)
+  const [galleryVisible, setGalleryVisible] = useState(false)
+  const [galleryIndex, setGalleryIndex] = useState(0)
 
   useEffect(() => {
     productProvider.getById(id).then((res) => {
@@ -50,12 +53,19 @@ const ProductPage = () => {
                   ? `${API_BASE_URL}/${selectedImage}`
                   : 'https://via.placeholder.com/500x400?text=Sem+Imagem'
               }
+              style={{ cursor: 'pointer' }}
+              onClick={() => {
+                // só abrir modal quando clicar na imagem principal
+                const index = product.imagesPaths.findIndex((img) => img.path === selectedImage)
+                setGalleryIndex(index)
+                setGalleryVisible(true)
+              }}
             />
           </CCard>
 
           {product.imagesPaths?.length > 1 && (
             <CRow className="mt-2 g-2">
-              {product.imagesPaths.map((img) => (
+              {product.imagesPaths.map((img, idx) => (
                 <CCol xs={3} key={img.path}>
                   <img
                     src={`${API_BASE_URL}/${img.path}`}
@@ -63,16 +73,24 @@ const ProductPage = () => {
                     style={{
                       width: '100%',
                       cursor: 'pointer',
-                      border:
-                        img.path === selectedImage ? '2px solid #0d6efd' : '1px solid #ccc',
+                      border: img.path === selectedImage ? '2px solid #0d6efd' : '1px solid #ccc',
                       borderRadius: '4px',
                     }}
-                    onClick={() => setSelectedImage(img.path)}
+                    onClick={() => setSelectedImage(img.path)} // apenas troca imagem
                   />
                 </CCol>
               ))}
             </CRow>
           )}
+
+          <ImageGalleryModal
+            visible={galleryVisible}
+            onClose={() => setGalleryVisible(false)}
+            images={product.imagesPaths?.map((img) => `${API_BASE_URL}/${img.path}`)}
+            currentIndex={galleryIndex}
+            setCurrentIndex={setGalleryIndex}
+          />
+
 
           {/* Descrição abaixo das imagens */}
           {product.description && (
@@ -130,7 +148,7 @@ const ProductPage = () => {
 
             {/* Botões de ação */}
             <div className="d-flex gap-3">
-              <CButton style={{backgroundColor : colors.halloween}} size="lg">
+              <CButton style={{ backgroundColor: colors.halloween }} size="lg">
                 Comprar Agora
               </CButton>
               <CButton color='primary' size="lg" variant="outline">

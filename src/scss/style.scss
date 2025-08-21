@@ -72,5 +72,21 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* novo: garantir altura mínima de 2 linhas */
+  line-height: 1.2rem; /* ajuste conforme sua fonte */
+  min-height: calc(1.2rem * 2); /* 2 linhas fixas */
 }
 
+.card-title-small {
+  font-size: 0.7rem; /* menor que normal */
+  font-weight: 500;
+}
+
+.card-text-small {
+  font-size: 0.5rem;
+}
+
+.card-price-small {
+  font-size: 0.7rem;
+}

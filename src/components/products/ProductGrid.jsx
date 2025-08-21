@@ -11,6 +11,7 @@ import {
   CPagination,
   CPaginationItem,
   CFormInput,
+  useColorModes,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilTrash, cilPlus } from '@coreui/icons'
@@ -18,9 +19,14 @@ import { productProvider } from '../../providers/ProductProvider'
 import { API_BASE_URL } from '../../api/axiosInstance'
 import ProductModal from './ProductModal'
 import { useNavigate } from "react-router";
+import { useSelector } from 'react-redux'
+import { colors } from '../../theme/colors'
 
 
 const ProductGrid = () => {
+  console.log("storedTheme");
+  const { colorMode } = useColorModes('coreui-free-react-admin-template-theme')
+
   const [products, setProducts] = useState({ content: [] })
   const [page, setPage] = useState(0)
   const [totalPages, setTotalPages] = useState(0)
@@ -30,6 +36,7 @@ const ProductGrid = () => {
   const [editingProduct, setEditingProduct] = useState(null)
   const pageSize = 24 // cards por página
   const navigate = useNavigate();
+
   const loadProducts = (pageNumber = 0, query = '') => {
     const fetch = query.trim() === '' ? productProvider.getAll : productProvider.getQuery
     fetch(pageNumber, pageSize, query).then((res) => {
@@ -79,14 +86,34 @@ const ProductGrid = () => {
       </div>
 
       {/* Grid de cards */}
-      <CRow className="g-4">
+      <CRow className="g-3">
         {products.content.map((product) => (
           <CCol xs={12} sm={4} md={3} lg={2} key={product.id}>
             <CCard
-            className="h-100 shadow-sm"
-            style={{ cursor: 'pointer' }}
-            onClick={() => navigate(`/product/${product.id}`)}
-          >
+              className="h-100 shadow-sm position-relative"
+              style={{ cursor: 'pointer' }}
+              onClick={() => navigate(`/product/${product.id}`)}
+            >
+              {/* Badge de % OFF no canto superior direito */}
+              {product.price && product.offerPrice && product.price > product.offerPrice && (
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    backgroundColor: colors.halloween,
+                    color: 'white',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                    fontSize: '0.75rem',
+                    fontWeight: 'bold',
+                    zIndex: 10,
+                  }}
+                >
+                  {Math.round(((product.price - product.offerPrice) / product.price) * 100)}% OFF
+                </span>
+              )}
+
               <CCardImage
                 orientation="top"
                 src={
@@ -94,31 +121,40 @@ const ProductGrid = () => {
                     ? `${API_BASE_URL}/${product.imagesPaths[0].path}`
                     : 'https://via.placeholder.com/300x200?text=Sem+Imagem'
                 }
-                style={{ height: '200px', objectFit: 'cover' }}
+                style={{
+                  height: '200px',
+                  width: '100%',
+                  objectFit: 'contain',
+                  backgroundColor: colorMode == 'dark' ? '#b3b9c2e0' : '#edededff',
+                  padding: '8px',
+                }}
               />
-              <CCardBody>
+
+              <CCardBody style={{ padding: '8px' }}>
                 <CCardTitle
-                  className="small text-truncate-multiline"
+                  className="card-title-small text-truncate-multiline"
                   title={product.name}
                 >
                   {product.name}
                 </CCardTitle>
 
-
-                <CCardText className="text-muted small">
+                <CCardText className="card-text-small text-muted">
                   {product.category?.name} • {product.subCategory?.name}
                 </CCardText>
 
-                <CCardText>
-                  <strong>
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL',
-                    }).format(product.offerPrice)}
+                <CCardText className="card-price-small">
+                  {product.price && (
+                    <span style={{ textDecoration: 'line-through', color: '#888', marginRight: '4px' }}>
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}
+                    </span>
+                  )}
+                  <strong style={{ color: colors.halloween }}>
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.offerPrice)}
                   </strong>
                 </CCardText>
               </CCardBody>
             </CCard>
+
 
           </CCol>
         ))}
