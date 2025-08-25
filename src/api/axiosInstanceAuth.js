@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://pecaapeca.app.br:8085', // URL base da API
+  baseURL: 'https://api.mekto.com.br', // URL base da API
   headers: {
     'Content-Type': 'application/json',
   },
