@@ -20,7 +20,7 @@ import { API_BASE_URL } from '../../api/axiosInstance'
 import ProductModal from './ProductModal'
 import { useNavigate } from "react-router";
 import { useSelector } from 'react-redux'
-import { colors } from '../../theme/colors'
+import { colors } from '../../theme/Colors'
 
 
 const ProductGrid = () => {

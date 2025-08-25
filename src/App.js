@@ -16,6 +16,7 @@ const Page404 = React.lazy(() => import('./views/pages/page404/Page404'))
 const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 const Store = React.lazy(() => import('./views/store/Store'))
 const Product = React.lazy(() => import('./views/store/Product'))
+const Cart = React.lazy(() => import('./views/store/Cart'))
 
 
 import PrivateRoute from './components/PrivateRoute'
@@ -47,6 +48,8 @@ const App = () => {
           <Route path="/500" element={<Page500 />} />
           <Route path="/store/*" element={<Store />} />
           <Route path="/product/:id" element={<Product />} />
+          <Route path="/cart/*" element={<Cart />} />
+
 
           {/* Rotas protegidas */}
           <Route path="*" element={

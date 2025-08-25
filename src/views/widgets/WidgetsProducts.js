@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { colors } from '../../theme/colors'
+import { colors } from '../../theme/Colors'
 
 import {
   CRow,

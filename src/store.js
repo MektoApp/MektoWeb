@@ -1,6 +1,7 @@
 import { legacy_createStore as createStore, combineReducers, applyMiddleware } from 'redux'
 import { thunk } from 'redux-thunk'
 import authReducer from './store/authSlice'
+import cartReducer from './store/cartSlice'
 
 // Estado antigo para tema/sidebar
 const initialUIState = {
@@ -17,10 +18,10 @@ const uiReducer = (state = initialUIState, { type, ...rest }) => {
   }
 }
 
-// Combina reducers
 const rootReducer = combineReducers({
   ui: uiReducer,
   auth: authReducer,
+  cart: cartReducer, // 🔥 carrinho incluído aqui
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))

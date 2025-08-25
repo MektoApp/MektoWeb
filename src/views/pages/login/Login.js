@@ -8,7 +8,7 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { cilLockLocked, cilUser } from '@coreui/icons';
-import { colors } from '../../../theme/colors'
+import { colors } from '../../../theme/Colors'
 
 
 const Login = () => {

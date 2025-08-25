@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { CModal, CModalBody, CButton, useColorModes } from '@coreui/react'
 import { FaArrowLeft, FaArrowRight, FaTimes } from 'react-icons/fa'
-import { colors } from '../../theme/colors'
+import { colors } from '../../theme/Colors'
 
 const ImageGalleryModal = ({ visible, onClose, images = [], currentIndex = 0, setCurrentIndex }) => {
   const { colorMode } = useColorModes('coreui-free-react-admin-template-theme')

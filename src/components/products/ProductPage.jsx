@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { productProvider } from '../../providers/ProductProvider'
 import { API_BASE_URL } from '../../api/axiosInstance'
 import {
@@ -16,12 +17,15 @@ import {
   CListGroupItem,
   CButton,
 } from '@coreui/react'
-import { colors } from '../../theme/colors'
+import { colors } from '../../theme/Colors'
 import ImageGalleryModal from './ImageGalleryModal'
-
+import { addItem } from '../../store/cartSlice'  // <-- importa a action do carrinho
 
 const ProductPage = () => {
   const { id } = useParams()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [selectedImage, setSelectedImage] = useState(null)
@@ -37,8 +41,16 @@ const ProductPage = () => {
   }, [id])
 
   if (loading) return <CSpinner color="primary" />
-
   if (!product) return <p>Produto não encontrado</p>
+
+  const handleAddToCart = () => {
+  dispatch(addItem({ id: product.id, quantity: 1 }))
+}
+
+  const handleBuyNow = () => {
+    handleAddToCart()
+    navigate('/cart')
+  }
 
   return (
     <CContainer className="py-4">
@@ -55,7 +67,6 @@ const ProductPage = () => {
               }
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                // só abrir modal quando clicar na imagem principal
                 const index = product.imagesPaths.findIndex((img) => img.path === selectedImage)
                 setGalleryIndex(index)
                 setGalleryVisible(true)
@@ -65,7 +76,7 @@ const ProductPage = () => {
 
           {product.imagesPaths?.length > 1 && (
             <CRow className="mt-2 g-2">
-              {product.imagesPaths.map((img, idx) => (
+              {product.imagesPaths.map((img) => (
                 <CCol xs={3} key={img.path}>
                   <img
                     src={`${API_BASE_URL}/${img.path}`}
@@ -76,7 +87,7 @@ const ProductPage = () => {
                       border: img.path === selectedImage ? '2px solid #0d6efd' : '1px solid #ccc',
                       borderRadius: '4px',
                     }}
-                    onClick={() => setSelectedImage(img.path)} // apenas troca imagem
+                    onClick={() => setSelectedImage(img.path)}
                   />
                 </CCol>
               ))}
@@ -91,8 +102,6 @@ const ProductPage = () => {
             setCurrentIndex={setGalleryIndex}
           />
 
-
-          {/* Descrição abaixo das imagens */}
           {product.description && (
             <CCard className="mt-3 p-3">
               <CCardText>
@@ -146,12 +155,11 @@ const ProductPage = () => {
               )}
             </CListGroup>
 
-            {/* Botões de ação */}
             <div className="d-flex gap-3">
-              <CButton style={{ backgroundColor: colors.halloween }} size="lg">
+              <CButton style={{ backgroundColor: colors.halloween }} size="lg" onClick={handleBuyNow}>
                 Comprar Agora
               </CButton>
-              <CButton color='primary' size="lg" variant="outline">
+              <CButton color='primary' size="lg" variant="outline" onClick={handleAddToCart}>
                 Adicionar ao Carrinho
               </CButton>
             </div>

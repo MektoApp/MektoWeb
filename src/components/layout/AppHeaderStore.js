@@ -13,6 +13,7 @@ import {
   CNavLink,
   CNavItem,
   useColorModes,
+  CBadge,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import {
@@ -23,10 +24,12 @@ import {
   cilMenu,
   cilMoon,
   cilSun,
+  cilCart,
 } from '@coreui/icons'
 
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from '../header/index'
+import { colors } from '../../theme/Colors'
 
 const AppHeader = () => {
   const headerRef = useRef()
@@ -34,6 +37,9 @@ const AppHeader = () => {
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+
+  // Pegando quantidade de itens no carrinho
+  const cartItems = useSelector((state) => state.cart.items) || []
 
   useEffect(() => {
     document.addEventListener('scroll', () => {
@@ -52,11 +58,29 @@ const AppHeader = () => {
           <CIcon icon={cilMenu} size="lg" />
         </CHeaderToggler>
 
+        <CHeaderNav className="ms-auto">
 
-        <CHeaderNav>
+          {/* Carrinho de compras */}
+          <CNavItem>
+            <CNavLink as={NavLink} to="/cart" className="position-relative">
+              <CIcon icon={cilCart} size="lg" />
+              {cartItems.length > 0 && (
+                <CBadge
+                  style={{backgroundColor: colors.halloween}}
+                  shape="rounded-pill"
+                  className="position-absolute top-0 start-100 translate-middle p-1"
+                >
+                  {cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+                </CBadge>
+              )}
+            </CNavLink>
+          </CNavItem>
+
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
+
+          {/* Tema */}
           <CDropdown variant="nav-item" placement="bottom-end">
             <CDropdownToggle caret={false}>
               {colorMode === 'dark' ? (
@@ -75,7 +99,7 @@ const AppHeader = () => {
                 type="button"
                 onClick={() => setColorMode('light')}
               >
-                <CIcon className="me-2" icon={cilSun} size="lg" /> Light
+                <CIcon className="me-2" icon={cilSun} size="lg" /> Claro
               </CDropdownItem>
               <CDropdownItem
                 active={colorMode === 'dark'}
@@ -84,7 +108,7 @@ const AppHeader = () => {
                 type="button"
                 onClick={() => setColorMode('dark')}
               >
-                <CIcon className="me-2" icon={cilMoon} size="lg" /> Dark
+                <CIcon className="me-2" icon={cilMoon} size="lg" /> Escuro
               </CDropdownItem>
               <CDropdownItem
                 active={colorMode === 'auto'}
@@ -97,13 +121,14 @@ const AppHeader = () => {
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
+
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
+
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
-
     </CHeader>
   )
 }
