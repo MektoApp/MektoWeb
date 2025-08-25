@@ -25,7 +25,7 @@ const _nav = [
         customClassName = "nav-icon" / > ,
         badge: {
             color: 'danger',
-            text: 'NEW',
+            text: 'NOVO',
         },
     },
     {
