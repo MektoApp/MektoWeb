@@ -123,7 +123,7 @@ const CartPage = () => {
                   Limpar
                 </CButton>
                 <CButton
-                  style={{ backgroundColor: colors.halloween }}
+                  style={{backgroundColor : colors.halloween, color:colors.branco}}
                   onClick={() =>
                     navigate('/checkout', { state: { company, items } })
                   }
