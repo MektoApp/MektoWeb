@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.mekto.com.br', // URL base da API
+  baseURL: import.meta.env.VITE_API_BASE_URL, // URL base da API
   headers: {
     'Content-Type': 'application/json',
   },
