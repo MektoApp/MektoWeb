@@ -42,11 +42,10 @@ const ProductGrid = () => {
   const [vehicle, setVehicle] = useState(null)
   const [error, setError] = useState(null)
 
-  const loadProducts = (cursor = null) => {
+  const loadProducts = (cursor = null, query = '') => {
     setLoading(true)
 
-    productProvider.getAll(pageSize, cursor).then((res) => {
-      console.log(res);
+    productProvider.getAll(pageSize, cursor, query).then((res) => {
       setProducts(prev =>
         cursor ? [...prev, ...res.items] : res.items
       )
@@ -62,7 +61,7 @@ const ProductGrid = () => {
       (entries) => {
         const first = entries[0]
         if (first.isIntersecting && nextPage && !loading) {
-          loadProducts(nextPage)
+          loadProducts(nextPage, search)
         }
       },
       {
@@ -78,40 +77,43 @@ const ProductGrid = () => {
   }, [nextPage, loading])
 
   useEffect(() => {
-    loadProducts()
+    loadProducts(null, '')
   }, [])
 
-const consultarPlaca = async () => {
-  if (!placa) return
+  const consultarPlaca = async () => {
+    if (!placa) return
 
-  setLoading(true)
-  setError(null)
+    setLoading(true)
+    setError(null)
 
-  try {
-    const res = await requestService.get(`/vehicle/plate/${placa}`)
+    try {
+      const res = await requestService.get(`/vehicle/plate/${placa}`)
 
-    // Axios já retorna o JSON em res.data
-    setVehicle(res)
+      // Axios já retorna o JSON em res.data
+      setVehicle(res)
 
-  } catch (err) {
-    setError('Placa não encontrada')
-    setVehicle(null)
-  } finally {
-    setLoading(false)
+    } catch (err) {
+      setError('Placa não encontrada')
+      setVehicle(null)
+    } finally {
+      setLoading(false)
+    }
   }
-}
-
   const handleSearchChange = (e) => {
     const value = e.target.value
     setSearch(value)
 
     if (timer) clearTimeout(timer)
+
     setTimer(
       setTimeout(() => {
-        loadProducts(0, value)
+        setProducts([])
+        setNextPage(null)
+        loadProducts(null, value) // começa do zero
       }, 500)
     )
   }
+
 
   const openModal = (product = null) => {
     setEditingProduct(product)
