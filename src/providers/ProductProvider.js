@@ -8,7 +8,7 @@ export const productProvider = {
         let url = `/products?limit=${limit}`
 
         if (query) {
-            url += `&search=${encodeURIComponent(query)}`
+            url = `/products/search?query=${query}&limit=${limit}`;
         }
 
         if (nextPage) {
@@ -17,8 +17,6 @@ export const productProvider = {
 
         return requestService.get(url)
     },
-
-
 
     getById: (id) => requestService.get(`/products/${id}`),
     create: (data) => requestService.post('/products', data),
