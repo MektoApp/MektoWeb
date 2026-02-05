@@ -88,9 +88,15 @@ const ProductGrid = () => {
 
     try {
       const res = await requestService.get(`/vehicle/plate/${placa}`)
-
+      console.log(res);
       // Axios já retorna o JSON em res.data
       setVehicle(res)
+
+      const vehicleName = `${res.marca} ${res.submodelo}`;
+      setSearch(vehicleName);
+      setProducts([])
+      setNextPage(null)
+      loadProducts(null, vehicleName) // começa do zero com o nome do veículo
 
     } catch (err) {
       setError('Placa não encontrada')
